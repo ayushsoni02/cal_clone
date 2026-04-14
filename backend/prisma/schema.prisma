@@ -1,0 +1,60 @@
+// backend/prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id         Int          @id @default(autoincrement())
+  name       String
+  username   String       @unique
+  email      String       @unique
+  createdAt  DateTime     @default(now())
+
+  eventTypes EventType[]
+  availability Availability[]
+}
+
+model EventType {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?
+  duration    Int       // in minutes (e.g. 15, 30, 60)
+  slug        String
+  userId      Int
+  createdAt   DateTime  @default(now())
+
+  user        User      @relation(fields: [userId], references: [id])
+  bookings    Booking[]
+
+  @@unique([userId, slug])
+}
+
+model Availability {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  dayOfWeek Int     // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  startTime String  // "09:00"
+  endTime   String  // "17:00"
+  timezone  String  @default("Asia/Kolkata")
+
+  user      User    @relation(fields: [userId], references: [id])
+}
+
+model Booking {
+  id          Int       @id @default(autoincrement())
+  eventTypeId Int
+  bookerName  String
+  bookerEmail String
+  startTime   DateTime
+  endTime     DateTime
+  status      String    @default("upcoming") // "upcoming" | "cancelled" | "past"
+  createdAt   DateTime  @default(now())
+
+  eventType   EventType @relation(fields: [eventTypeId], references: [id])
+}
