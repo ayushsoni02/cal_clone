@@ -70,7 +70,7 @@ export default function BookingsPage() {
           {[1, 2, 3].map(i => <div key={i} className="h-9 w-28 bg-gray-200 rounded-lg" />)}
         </div>
         <div className="space-y-3">
-          {[1, 2, 3].map(i => <div key={i} className="h-20 bg-white rounded-lg border border-gray-200" />)}
+          {[1, 2, 3].map(i => <div key={i} className="h-20 bg-[var(--cal-bg)] rounded-lg border border-[var(--cal-border)]" />)}
         </div>
       </div>
     );
@@ -80,8 +80,8 @@ export default function BookingsPage() {
     <div>
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Bookings</h1>
-        <p className="text-gray-500 mt-1 text-sm">View and manage your upcoming and past bookings.</p>
+        <h1 className="text-2xl font-bold text-[var(--cal-text)]">Bookings</h1>
+        <p className="text-[var(--cal-text-muted)] mt-1 text-sm">View and manage your upcoming and past bookings.</p>
       </div>
 
       {/* Tabs */}
@@ -91,13 +91,13 @@ export default function BookingsPage() {
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
             className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-150 ${
-              activeTab === tab.key ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+              activeTab === tab.key ? 'bg-[var(--cal-bg)] text-[var(--cal-text)] shadow-sm' : 'text-[var(--cal-text-muted)] hover:text-[var(--cal-text)]'
             }`}
           >
             {tab.label}
             {tabCounts[tab.key] > 0 && (
               <span className={`ml-2 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-medium rounded-full ${
-                activeTab === tab.key ? 'bg-gray-900 text-white' : 'bg-gray-200 text-gray-600'
+                activeTab === tab.key ? 'bg-[var(--cal-brand)] text-[var(--cal-brand-text)]' : 'bg-gray-200 text-gray-600'
               }`}>{tabCounts[tab.key]}</span>
             )}
           </button>
@@ -106,7 +106,7 @@ export default function BookingsPage() {
 
       {/* Bookings List */}
       {filtered.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-xl border border-gray-200">
+        <div className="text-center py-16 bg-[var(--cal-bg)] rounded-lg border border-[var(--cal-border)]">
           <svg className="mx-auto h-12 w-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
           </svg>
@@ -122,7 +122,7 @@ export default function BookingsPage() {
           </p>
         </div>
       ) : (
-        <div className="bg-white rounded-xl border border-gray-200 divide-y divide-gray-200 overflow-hidden shadow-sm">
+        <div className="bg-[var(--cal-bg)] rounded-lg border border-[var(--cal-border)] divide-y divide-[var(--cal-border)] overflow-hidden shadow-sm">
           {filtered.map((booking) => (
             <BookingRow key={booking.id} booking={booking} now={now} onCancel={setCancelId} />
           ))}
@@ -133,7 +133,7 @@ export default function BookingsPage() {
       {cancelId !== null && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setCancelId(null)} />
-          <div className="relative bg-white rounded-xl shadow-2xl p-6 max-w-sm w-full mx-4 animate-fade-in">
+          <div className="relative bg-[var(--cal-bg)] rounded-lg shadow-2xl p-6 max-w-sm w-full mx-4 animate-fade-in">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
                 <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -146,8 +146,8 @@ export default function BookingsPage() {
               </div>
             </div>
             <div className="flex gap-3 justify-end">
-              <button onClick={() => setCancelId(null)} disabled={cancelling} className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">Keep booking</button>
-              <button onClick={() => handleCancel(cancelId)} disabled={cancelling} className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 disabled:opacity-50 transition-colors">
+              <button onClick={() => setCancelId(null)} disabled={cancelling} className="h-10 px-4 text-sm font-medium text-[var(--cal-text-muted)] bg-[var(--cal-bg)] border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">Keep booking</button>
+              <button onClick={() => handleCancel(cancelId)} disabled={cancelling} className="inline-flex items-center gap-2 h-10 px-4 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 disabled:opacity-50 transition-colors">
                 {cancelling && (
                   <svg className="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />

@@ -1,8 +1,18 @@
 @import "tailwindcss";
 
+/* ===== Cal.com Design System ===== */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --cal-bg: #ffffff;
+  --cal-bg-subtle: #f8f9fa;
+  --cal-border: #e5e7eb;
+  --cal-text: #111827;
+  --cal-text-muted: #6b7280;
+  --cal-brand: #000000;
+  --cal-brand-text: #ffffff;
+  --cal-success: #059669;
+
+  --background: var(--cal-bg);
+  --foreground: var(--cal-text);
 }
 
 @theme inline {
@@ -10,24 +20,93 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
+
+  /* Custom animations */
   --animate-fade-in: fade-in 0.3s ease-out;
+  --animate-fade-in-up: fade-in-up 0.35s ease-out;
+  --animate-slide-in-right: slide-in-right 0.3s ease-out;
+  --animate-scale-in: scale-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --animate-stagger-in: stagger-in 0.25s ease-out both;
 }
 
+/* ===== Base Styles ===== */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  background: var(--cal-bg-subtle);
+  color: var(--cal-text);
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* Input focus rings — matches Cal.com black ring */
+input:focus,
+textarea:focus,
+select:focus {
+  --tw-ring-color: var(--cal-brand);
+}
+
+/* ===== Keyframe Animations ===== */
 @keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes stagger-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes checkmark-draw {
+  from { stroke-dashoffset: 24; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.9); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+  100% { transform: scale(0.9); opacity: 1; }
+}
+
+/* ===== Stagger delay utility classes ===== */
+.stagger-1 { animation-delay: 0.03s; }
+.stagger-2 { animation-delay: 0.06s; }
+.stagger-3 { animation-delay: 0.09s; }
+.stagger-4 { animation-delay: 0.12s; }
+.stagger-5 { animation-delay: 0.15s; }
+.stagger-6 { animation-delay: 0.18s; }
+.stagger-7 { animation-delay: 0.21s; }
+.stagger-8 { animation-delay: 0.24s; }
+.stagger-9 { animation-delay: 0.27s; }
+.stagger-10 { animation-delay: 0.30s; }
+.stagger-11 { animation-delay: 0.33s; }
+.stagger-12 { animation-delay: 0.36s; }
+.stagger-13 { animation-delay: 0.39s; }
+.stagger-14 { animation-delay: 0.42s; }
+.stagger-15 { animation-delay: 0.45s; }
+.stagger-16 { animation-delay: 0.48s; }
+
+/* ===== Checkmark draw animation ===== */
+.checkmark-animated {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: checkmark-draw 0.5s ease-out 0.3s forwards;
 }
 
 /* ===== React Calendar Overrides ===== */
@@ -45,7 +124,7 @@ body {
 .react-calendar__navigation button {
   font-size: 0.95rem !important;
   font-weight: 600 !important;
-  color: #111827 !important;
+  color: var(--cal-text) !important;
   min-width: 36px !important;
   border-radius: 8px !important;
 }
@@ -62,7 +141,7 @@ body {
 .react-calendar__month-view__weekdays {
   font-size: 0.75rem !important;
   font-weight: 500 !important;
-  color: #6b7280 !important;
+  color: var(--cal-text-muted) !important;
   text-transform: uppercase !important;
 }
 
@@ -74,7 +153,8 @@ body {
   padding: 0.65em 0.5em !important;
   font-size: 0.875rem !important;
   border-radius: 8px !important;
-  color: #111827 !important;
+  color: var(--cal-text) !important;
+  transition: background 0.15s ease, color 0.15s ease !important;
 }
 
 .react-calendar__tile:hover {
@@ -85,7 +165,20 @@ body {
 .react-calendar__tile--now {
   background: transparent !important;
   font-weight: 700 !important;
-  color: #111827 !important;
+  color: var(--cal-text) !important;
+  position: relative !important;
+}
+
+.react-calendar__tile--now::after {
+  content: '' !important;
+  position: absolute !important;
+  bottom: 4px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 4px !important;
+  height: 4px !important;
+  border-radius: 50% !important;
+  background: var(--cal-brand) !important;
 }
 
 .react-calendar__tile--now:hover {
@@ -94,8 +187,8 @@ body {
 
 .react-calendar__tile--active,
 .react-calendar__tile--active:hover {
-  background: #111827 !important;
-  color: #ffffff !important;
+  background: var(--cal-brand) !important;
+  color: var(--cal-brand-text) !important;
   border-radius: 8px !important;
   font-weight: 600 !important;
 }
@@ -108,4 +201,22 @@ body {
 
 .react-calendar__month-view__days__day--neighboringMonth {
   color: #d1d5db !important;
+}
+
+/* ===== Scrollbar Styling ===== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
 }

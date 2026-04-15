@@ -13,17 +13,17 @@ interface EventTypeCardProps {
 
 export default function EventTypeCard({ eventType: et, copiedSlug, onCopyLink, onDelete }: EventTypeCardProps) {
   return (
-    <div className="flex items-center group hover:bg-gray-50 transition-colors">
-      {/* Colored left bar */}
+    <div className="flex items-center group hover:bg-[var(--cal-bg-subtle)] transition-colors duration-150">
+      {/* Colored left bar — 4px wide */}
       <div
-        className="w-1.5 self-stretch rounded-l-xl flex-shrink-0"
-        style={{ backgroundColor: getDurationColor(et.duration) }}
+        className="w-1 self-stretch rounded-l-lg flex-shrink-0"
+        style={{ backgroundColor: getDurationColor(et.duration), width: '4px' }}
       />
 
       {/* Content */}
       <div className="flex-1 px-5 py-4 min-w-0">
         <div className="flex items-center gap-3">
-          <h3 className="text-sm font-semibold text-gray-900 truncate">{et.title}</h3>
+          <h3 className="text-sm font-semibold text-[var(--cal-text)] truncate">{et.title}</h3>
           <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getDurationBadgeClasses(et.duration)}`}>
             {et.duration}m
           </span>

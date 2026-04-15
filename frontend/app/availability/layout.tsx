@@ -8,7 +8,7 @@ export default function AvailabilityLayout({
   return (
     <div className="flex">
       <Sidebar />
-      <main className="ml-56 flex-1 min-h-screen bg-gray-50 p-8">
+      <main className="ml-[224px] flex-1 min-h-screen bg-[var(--cal-bg-subtle)] p-8 animate-fade-in">
         {children}
       </main>
     </div>

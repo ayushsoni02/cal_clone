@@ -15,24 +15,24 @@ export default function BookingRow({ booking, now, onCancel }: BookingRowProps) 
   const isCancelled = booking.status === 'cancelled';
 
   return (
-    <div className={`px-5 py-4 flex items-center gap-5 group hover:bg-gray-50 transition-colors ${isCancelled ? 'opacity-60' : ''}`}>
+    <div className={`px-5 py-4 flex items-center gap-5 group hover:bg-[var(--cal-bg-subtle)] transition-colors duration-150 ${isCancelled ? 'opacity-60' : ''}`}>
       {/* Date/Time block */}
       <div className="flex-shrink-0 w-36">
-        <p className="text-sm font-medium text-gray-900">
+        <p className="text-sm font-medium text-[var(--cal-text)]">
           {format(start, 'EEE, MMM d, yyyy')}
         </p>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-[var(--cal-text-muted)]">
           {format(start, 'h:mm a')} – {format(end, 'h:mm a')}
         </p>
       </div>
 
       {/* Vertical divider */}
-      <div className="w-px h-10 bg-gray-200 flex-shrink-0" />
+      <div className="w-px h-10 bg-[var(--cal-border)] flex-shrink-0" />
 
       {/* Event & Booker info */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <p className="text-sm font-medium text-gray-900 truncate">
+          <p className="text-sm font-medium text-[var(--cal-text)] truncate">
             {booking.eventType.title}
           </p>
           <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600 flex-shrink-0">
@@ -58,7 +58,7 @@ export default function BookingRow({ booking, now, onCancel }: BookingRowProps) 
       {booking.status === 'upcoming' && new Date(booking.startTime) > now && (
         <button
           onClick={() => onCancel(booking.id)}
-          className="flex-shrink-0 px-3 py-1.5 text-sm font-medium text-gray-600 border border-gray-300 rounded-lg hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-colors opacity-0 group-hover:opacity-100"
+          className="flex-shrink-0 h-8 px-3 text-sm font-medium text-[var(--cal-text-muted)] border border-gray-300 rounded-md hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-all duration-150 opacity-0 group-hover:opacity-100"
         >
           Cancel
         </button>
