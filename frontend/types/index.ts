@@ -5,8 +5,10 @@ export interface EventType {
   title: string;
   description: string | null;
   duration: number;
+  bufferMinutes?: number;
   slug: string;
   userId: number;
+  questions?: { id: string; label: string; required: boolean }[];
   createdAt: string;
 }
 
@@ -15,7 +17,9 @@ export interface EventTypePublic {
   title: string;
   description: string | null;
   duration: number;
+  bufferMinutes?: number;
   slug: string;
+  questions?: { id: string; label: string; required: boolean }[];
   user: {
     id: number;
     username: string;
@@ -31,12 +35,14 @@ export interface Booking {
   startTime: string;
   endTime: string;
   status: string;
+  responses?: any;
   createdAt: string;
   eventType: {
     id: number;
     title: string;
     slug: string;
     duration: number;
+    questions?: any;
   };
 }
 

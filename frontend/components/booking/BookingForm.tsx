@@ -17,6 +17,7 @@ export default function BookingForm({ eventType, selectedDate, selectedSlot, onB
   const router = useRouter();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [responses, setResponses] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -44,6 +45,7 @@ export default function BookingForm({ eventType, selectedDate, selectedSlot, onB
         bookerName: name.trim(),
         bookerEmail: email.trim(),
         startTime: selectedSlot.datetime,
+        responses,
       });
 
       router.push(
@@ -114,6 +116,28 @@ export default function BookingForm({ eventType, selectedDate, selectedSlot, onB
             className="w-full h-10 px-3 border border-gray-300 rounded-md text-sm text-[var(--cal-text)] placeholder:text-gray-400 focus:ring-2 focus:ring-[var(--cal-brand)] focus:ring-offset-2 focus:border-[var(--cal-brand)] outline-none transition-shadow"
           />
         </div>
+
+        {eventType.questions && eventType.questions.length > 0 && (
+          <div className="pt-2 space-y-4 border-t border-gray-100">
+            <h3 className="text-sm font-medium text-[var(--cal-text)]">Additional Information</h3>
+            {eventType.questions.map((q: any) => (
+              <div key={q.id}>
+                <label htmlFor={`q-${q.id}`} className="block text-sm font-medium text-[var(--cal-text)] mb-1.5">
+                  {q.label} {q.required && <span className="text-red-500">*</span>}
+                </label>
+                <input
+                  id={`q-${q.id}`}
+                  type="text"
+                  value={responses[q.id] || ''}
+                  onChange={(e) => setResponses({ ...responses, [q.id]: e.target.value })}
+                  placeholder="Your answer"
+                  required={q.required}
+                  className="w-full h-10 px-3 border border-gray-300 rounded-md text-sm text-[var(--cal-text)] placeholder:text-gray-400 focus:ring-2 focus:ring-[var(--cal-brand)] focus:ring-offset-2 focus:border-[var(--cal-brand)] outline-none transition-shadow"
+                />
+              </div>
+            ))}
+          </div>
+        )}
 
         <button
           type="submit"

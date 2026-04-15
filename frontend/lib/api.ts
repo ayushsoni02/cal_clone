@@ -13,6 +13,9 @@ export const deleteEventType = (id: number) => api.delete(`/event-types/${id}`);
 // Availability
 export const getAvailability = () => api.get('/availability');
 export const saveAvailability = (data: any) => api.put('/availability', data);
+export const getOverrides = () => api.get('/availability/overrides');
+export const saveOverride = (data: any) => api.post('/availability/overrides', data);
+export const deleteOverride = (id: number) => api.delete(`/availability/overrides/${id}`);
 
 // Bookings
 export const getBookings = () => api.get('/bookings');
@@ -20,6 +23,7 @@ export const getSlots = (eventTypeId: number, date: string) =>
   api.get(`/bookings/slots?eventTypeId=${eventTypeId}&date=${date}`);
 export const createBooking = (data: any) => api.post('/bookings', data);
 export const cancelBooking = (id: number) => api.patch(`/bookings/${id}/cancel`);
+export const rescheduleBooking = (id: number, data: { startTime: string }) => api.patch(`/bookings/${id}/reschedule`, data);
 
 // Public
 export const getPublicEventType = (username: string, slug: string) =>

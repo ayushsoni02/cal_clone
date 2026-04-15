@@ -18,6 +18,7 @@ model User {
 
   eventTypes EventType[]
   availability Availability[]
+  dateOverrides DateOverride[]
 }
 
 model EventType {
@@ -25,8 +26,10 @@ model EventType {
   title       String
   description String?
   duration    Int       // in minutes (e.g. 15, 30, 60)
+  bufferMinutes Int     @default(0) // buffer time after meeting
   slug        String
   userId      Int
+  questions   Json?     // custom booking questions
   createdAt   DateTime  @default(now())
 
   user        User      @relation(fields: [userId], references: [id])
@@ -54,7 +57,21 @@ model Booking {
   startTime   DateTime
   endTime     DateTime
   status      String    @default("upcoming") // "upcoming" | "cancelled" | "past"
+  responses   Json?     // answers to custom questions
   createdAt   DateTime  @default(now())
 
   eventType   EventType @relation(fields: [eventTypeId], references: [id])
+}
+
+model DateOverride {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  date      DateTime @db.Date
+  isBlocked Boolean  @default(false)
+  startTime String?  // "09:00" - if not blocked
+  endTime   String?  // "17:00" - if not blocked
+  
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, date])
 }

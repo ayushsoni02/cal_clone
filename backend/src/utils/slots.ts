@@ -5,7 +5,8 @@ export function generateSlots(
   startTime: string,
   endTime: string,
   duration: number,
-  existingBookings: { startTime: Date; endTime: Date }[]
+  existingBookings: { startTime: Date; endTime: Date }[],
+  bufferMinutes: number = 0
 ): { time: string; datetime: string }[] {
   const [startH, startM] = startTime.split(':').map(Number);
   const [endH, endM] = endTime.split(':').map(Number);
@@ -18,7 +19,9 @@ export function generateSlots(
   while (addMinutes(current, duration) <= end) {
     const slotEnd = addMinutes(current, duration);
     const isBooked = existingBookings.some(booking => {
-      return current < booking.endTime && slotEnd > booking.startTime;
+      const paddedStart = addMinutes(booking.startTime, -bufferMinutes);
+      const paddedEnd = addMinutes(booking.endTime, bufferMinutes);
+      return current < paddedEnd && slotEnd > paddedStart;
     });
     if (!isBooked) {
       slots.push({

@@ -5,6 +5,7 @@ import { getAvailability, saveAvailability } from '@/lib/api';
 import { DaySchedule } from '@/types';
 import { DAYS } from '@/lib/utils';
 import AvailabilityForm from '@/components/availability/AvailabilityForm';
+import DateOverrides from '@/components/availability/DateOverrides';
 
 const DEFAULT_SCHEDULE: DaySchedule[] = DAYS.map((_, i) => ({
   dayOfWeek: i,
@@ -124,6 +125,8 @@ export default function AvailabilityPage() {
         onTimezoneChange={(tz) => { setTimezone(tz); setSaved(false); }}
         onSave={handleSave}
       />
+
+      <DateOverrides />
     </div>
   );
 }

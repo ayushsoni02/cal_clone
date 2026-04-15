@@ -52,16 +52,37 @@ export default function BookingRow({ booking, now, onCancel }: BookingRowProps) 
             {booking.bookerName} · {booking.bookerEmail}
           </p>
         </div>
+
+        {booking.responses && Object.keys(booking.responses).length > 0 && (
+          <div className="mt-2 text-xs text-gray-500 bg-gray-50 border border-gray-100 p-2 rounded w-fit">
+            {Object.entries(booking.responses).map(([k, v]) => (
+              <div key={k} className="mb-0.5">
+                <span className="font-medium text-gray-600">
+                  {booking.eventType.questions?.find((q: any) => q.id === k)?.label || 'Response'}:
+                </span>{' '}
+                {v as string}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Cancel button (only for upcoming) */}
+      {/* Actions (only for upcoming) */}
       {booking.status === 'upcoming' && new Date(booking.startTime) > now && (
-        <button
-          onClick={() => onCancel(booking.id)}
-          className="flex-shrink-0 h-8 px-3 text-sm font-medium text-[var(--cal-text-muted)] border border-gray-300 rounded-md hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-all duration-150 sm:opacity-0 sm:group-hover:opacity-100 w-full sm:w-auto"
-        >
-          Cancel
-        </button>
+        <div className="flex items-center gap-2 flex-shrink-0 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-150">
+          <button
+            onClick={() => window.location.href = `/reschedule/${booking.id}`}
+            className="h-8 px-3 text-sm font-medium text-[var(--cal-text-muted)] border border-gray-300 rounded-md hover:bg-gray-50 hover:text-[var(--cal-text)] transition-colors w-full sm:w-auto"
+          >
+            Reschedule
+          </button>
+          <button
+            onClick={() => onCancel(booking.id)}
+            className="h-8 px-3 text-sm font-medium text-[var(--cal-text-muted)] border border-gray-300 rounded-md hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-colors w-full sm:w-auto"
+          >
+            Cancel
+          </button>
+        </div>
       )}
     </div>
   );

@@ -1,11 +1,12 @@
 import { Request, Response } from 'express';
 import prisma from '../lib/prisma';
+import { DEFAULT_USER_ID } from '../config/constants';
 
 // GET / — Get all availability records for the default user
 export const getAvailability = async (_req: Request, res: Response) => {
   try {
     const availability = await prisma.availability.findMany({
-      where: { userId: 1 },
+      where: { userId: DEFAULT_USER_ID },
       orderBy: { dayOfWeek: 'asc' },
     });
     res.json(availability);
@@ -51,12 +52,12 @@ export const updateAvailability = async (req: Request, res: Response) => {
 
     // Delete all existing, then create new
     await prisma.availability.deleteMany({
-      where: { userId: 1 },
+      where: { userId: DEFAULT_USER_ID },
     });
 
     await prisma.availability.createMany({
       data: availability.map((record: { dayOfWeek: number; startTime: string; endTime: string; timezone?: string }) => ({
-        userId: 1,
+        userId: DEFAULT_USER_ID,
         dayOfWeek: record.dayOfWeek,
         startTime: record.startTime,
         endTime: record.endTime,
@@ -66,7 +67,7 @@ export const updateAvailability = async (req: Request, res: Response) => {
 
     // Return the newly created records
     const newAvailability = await prisma.availability.findMany({
-      where: { userId: 1 },
+      where: { userId: DEFAULT_USER_ID },
       orderBy: { dayOfWeek: 'asc' },
     });
 
@@ -76,3 +77,73 @@ export const updateAvailability = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to update availability' });
   }
 };
+
+// GET /overrides — Get all date overrides for the default user
+export const getOverrides = async (_req: Request, res: Response) => {
+  try {
+    const overrides = await prisma.dateOverride.findMany({
+      where: { userId: DEFAULT_USER_ID },
+      orderBy: { date: 'asc' },
+    });
+    res.json(overrides);
+  } catch (error) {
+    console.error('Error fetching overrides:', error);
+    res.status(500).json({ error: 'Failed to fetch overrides' });
+  }
+};
+
+// POST /overrides — Create or update a date override
+export const createOverride = async (req: Request, res: Response) => {
+  try {
+    const { date, isBlocked, startTime, endTime } = req.body;
+
+    if (!date) {
+      return res.status(400).json({ error: 'date is required' });
+    }
+
+    const targetDate = new Date(date);
+    targetDate.setHours(0, 0, 0, 0); // normalize date
+
+    const data = {
+      isBlocked: Boolean(isBlocked),
+      startTime: isBlocked ? null : startTime,
+      endTime: isBlocked ? null : endTime,
+      userId: DEFAULT_USER_ID,
+      date: targetDate,
+    };
+
+    const existing = await prisma.dateOverride.findUnique({
+      where: { userId_date: { userId: DEFAULT_USER_ID, date: targetDate } },
+    });
+
+    let result;
+    if (existing) {
+      result = await prisma.dateOverride.update({
+        where: { id: existing.id },
+        data,
+      });
+    } else {
+      result = await prisma.dateOverride.create({ data });
+    }
+
+    res.json(result);
+  } catch (error) {
+    console.error('Error creating override:', error);
+    res.status(500).json({ error: 'Failed to create override' });
+  }
+};
+
+// DELETE /overrides/:id — Delete an override by ID
+export const deleteOverride = async (req: Request<{ id: string }>, res: Response) => {
+  try {
+    const { id } = req.params;
+    await prisma.dateOverride.delete({
+      where: { id: Number(id) },
+    });
+    res.status(204).send();
+  } catch (error) {
+    console.error('Error deleting override:', error);
+    res.status(500).json({ error: 'Failed to delete override' });
+  }
+};
+
