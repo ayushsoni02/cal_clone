@@ -15,9 +15,9 @@ export default function BookingRow({ booking, now, onCancel }: BookingRowProps) 
   const isCancelled = booking.status === 'cancelled';
 
   return (
-    <div className={`px-5 py-4 flex items-center gap-5 group hover:bg-[var(--cal-bg-subtle)] transition-colors duration-150 ${isCancelled ? 'opacity-60' : ''}`}>
+    <div className={`px-4 sm:px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 group hover:bg-[var(--cal-bg-subtle)] transition-colors duration-150 ${isCancelled ? 'opacity-60' : ''}`}>
       {/* Date/Time block */}
-      <div className="flex-shrink-0 w-36">
+      <div className="flex-shrink-0 sm:w-36">
         <p className="text-sm font-medium text-[var(--cal-text)]">
           {format(start, 'EEE, MMM d, yyyy')}
         </p>
@@ -26,12 +26,12 @@ export default function BookingRow({ booking, now, onCancel }: BookingRowProps) 
         </p>
       </div>
 
-      {/* Vertical divider */}
-      <div className="w-px h-10 bg-[var(--cal-border)] flex-shrink-0" />
+      {/* Vertical divider (desktop only) */}
+      <div className="hidden sm:block w-px h-10 bg-[var(--cal-border)] flex-shrink-0" />
 
       {/* Event & Booker info */}
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <p className="text-sm font-medium text-[var(--cal-text)] truncate">
             {booking.eventType.title}
           </p>
@@ -58,7 +58,7 @@ export default function BookingRow({ booking, now, onCancel }: BookingRowProps) 
       {booking.status === 'upcoming' && new Date(booking.startTime) > now && (
         <button
           onClick={() => onCancel(booking.id)}
-          className="flex-shrink-0 h-8 px-3 text-sm font-medium text-[var(--cal-text-muted)] border border-gray-300 rounded-md hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-all duration-150 opacity-0 group-hover:opacity-100"
+          className="flex-shrink-0 h-8 px-3 text-sm font-medium text-[var(--cal-text-muted)] border border-gray-300 rounded-md hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-all duration-150 sm:opacity-0 sm:group-hover:opacity-100 w-full sm:w-auto"
         >
           Cancel
         </button>

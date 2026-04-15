@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -35,12 +36,13 @@ const navItems = [
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  return (
-    <aside className="w-[224px] h-screen border-r border-[var(--cal-border)] flex flex-col bg-[var(--cal-bg)] fixed left-0 top-0 z-50">
+  const sidebarContent = (
+    <>
       {/* Logo */}
       <div className="px-5 py-4 border-b border-[var(--cal-border)]">
-        <Link href="/dashboard" className="flex items-center gap-2.5 group">
+        <Link href="/dashboard" className="flex items-center gap-2.5 group" onClick={() => setMobileOpen(false)}>
           <div className="w-8 h-8 rounded-lg bg-[var(--cal-brand)] flex items-center justify-center transition-transform group-hover:scale-105">
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
               <path d="M7 12.5L10.5 16L17 9" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -58,6 +60,7 @@ export default function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={() => setMobileOpen(false)}
               className={`flex items-center gap-3 px-3 py-2 rounded-md text-[13px] font-medium transition-all duration-150
                 ${isActive
                   ? 'bg-gray-100 text-[var(--cal-text)]'
@@ -85,6 +88,46 @@ export default function Sidebar() {
           </div>
         </div>
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Mobile hamburger button */}
+      <button
+        onClick={() => setMobileOpen(true)}
+        className="lg:hidden fixed top-4 left-4 z-50 w-10 h-10 rounded-md bg-[var(--cal-bg)] border border-[var(--cal-border)] shadow-sm flex items-center justify-center text-[var(--cal-text)]"
+        aria-label="Open menu"
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+      </button>
+
+      {/* Mobile overlay */}
+      {mobileOpen && (
+        <div className="lg:hidden fixed inset-0 z-50">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
+          <aside className="relative w-[280px] h-full flex flex-col bg-[var(--cal-bg)] shadow-xl" style={{ animation: 'slide-in-left 0.25s ease-out' }}>
+            {/* Close button */}
+            <button
+              onClick={() => setMobileOpen(false)}
+              className="absolute top-4 right-4 w-8 h-8 rounded-md hover:bg-gray-100 flex items-center justify-center text-[var(--cal-text-muted)]"
+              aria-label="Close menu"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            {sidebarContent}
+          </aside>
+        </div>
+      )}
+
+      {/* Desktop sidebar */}
+      <aside className="hidden lg:flex w-[224px] h-screen border-r border-[var(--cal-border)] flex-col bg-[var(--cal-bg)] fixed left-0 top-0 z-40">
+        {sidebarContent}
+      </aside>
+    </>
   );
 }

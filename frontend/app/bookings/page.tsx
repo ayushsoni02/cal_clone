@@ -80,12 +80,12 @@ export default function BookingsPage() {
     <div>
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-[var(--cal-text)]">Bookings</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-[var(--cal-text)]">Bookings</h1>
         <p className="text-[var(--cal-text-muted)] mt-1 text-sm">View and manage your upcoming and past bookings.</p>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-6 bg-gray-100 p-1 rounded-lg w-fit">
+      <div className="flex gap-1 mb-6 bg-gray-100 p-1 rounded-lg w-full sm:w-fit overflow-x-auto">
         {TABS.map((tab) => (
           <button
             key={tab.key}

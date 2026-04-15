@@ -24,8 +24,8 @@ export default function AvailabilityForm({
   return (
     <div className="bg-[var(--cal-bg)] rounded-lg border border-[var(--cal-border)] shadow-sm">
       {/* Timezone selector */}
-      <div className="px-6 py-4 border-b border-[var(--cal-border)]">
-        <div className="flex items-center justify-between">
+      <div className="px-4 sm:px-6 py-4 border-b border-[var(--cal-border)]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
@@ -38,7 +38,7 @@ export default function AvailabilityForm({
           <select
             value={timezone}
             onChange={(e) => onTimezoneChange(e.target.value)}
-            className="h-10 px-3 border border-gray-300 rounded-md text-sm text-[var(--cal-text)] bg-[var(--cal-bg)] focus:ring-2 focus:ring-[var(--cal-brand)] focus:ring-offset-2 outline-none cursor-pointer"
+            className="h-10 px-3 border border-gray-300 rounded-md text-sm text-[var(--cal-text)] bg-[var(--cal-bg)] focus:ring-2 focus:ring-[var(--cal-brand)] focus:ring-offset-2 outline-none cursor-pointer w-full sm:w-auto"
           >
             {TIMEZONES.map(tz => (
               <option key={tz} value={tz}>{tz.replace(/_/g, ' ')}</option>
@@ -52,9 +52,9 @@ export default function AvailabilityForm({
         {schedule.map((day) => (
           <div
             key={day.dayOfWeek}
-            className={`px-6 py-4 transition-colors duration-150 ${day.enabled ? 'bg-[var(--cal-bg)]' : 'bg-[var(--cal-bg-subtle)]'}`}
+            className={`px-4 sm:px-6 py-4 transition-colors duration-150 ${day.enabled ? 'bg-[var(--cal-bg)]' : 'bg-[var(--cal-bg-subtle)]'}`}
           >
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
               {/* Toggle */}
               <button
                 type="button"
@@ -73,7 +73,7 @@ export default function AvailabilityForm({
               </button>
 
               {/* Day name */}
-              <span className={`w-28 text-sm font-medium flex-shrink-0 ${
+              <span className={`w-20 sm:w-28 text-sm font-medium flex-shrink-0 ${
                 day.enabled ? 'text-gray-900' : 'text-gray-400'
               }`}>
                 <span className="hidden sm:inline">{DAYS[day.dayOfWeek]}</span>
@@ -82,23 +82,23 @@ export default function AvailabilityForm({
 
               {/* Time range */}
               {day.enabled ? (
-                <div className="flex items-center gap-2 flex-1">
+                <div className="flex items-center gap-2 flex-1 flex-wrap sm:flex-nowrap">
                   <select
                     value={day.startTime}
                     onChange={(e) => onUpdateTime(day.dayOfWeek, 'startTime', e.target.value)}
-                    className="h-10 px-3 border border-gray-300 rounded-md text-sm text-[var(--cal-text)] bg-[var(--cal-bg)] focus:ring-2 focus:ring-[var(--cal-brand)] focus:ring-offset-2 outline-none cursor-pointer min-w-[130px]"
+                    className="h-10 px-3 border border-gray-300 rounded-md text-sm text-[var(--cal-text)] bg-[var(--cal-bg)] focus:ring-2 focus:ring-[var(--cal-brand)] focus:ring-offset-2 outline-none cursor-pointer flex-1 min-w-[110px]"
                   >
                     {TIME_OPTIONS.map(t => (
                       <option key={t} value={t}>{formatTime12h(t)}</option>
                     ))}
                   </select>
-                  <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <svg className="w-4 h-4 text-gray-400 flex-shrink-0 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                   </svg>
                   <select
                     value={day.endTime}
                     onChange={(e) => onUpdateTime(day.dayOfWeek, 'endTime', e.target.value)}
-                    className="h-10 px-3 border border-gray-300 rounded-md text-sm text-[var(--cal-text)] bg-[var(--cal-bg)] focus:ring-2 focus:ring-[var(--cal-brand)] focus:ring-offset-2 outline-none cursor-pointer min-w-[130px]"
+                    className="h-10 px-3 border border-gray-300 rounded-md text-sm text-[var(--cal-text)] bg-[var(--cal-bg)] focus:ring-2 focus:ring-[var(--cal-brand)] focus:ring-offset-2 outline-none cursor-pointer flex-1 min-w-[110px]"
                   >
                     {TIME_OPTIONS.map(t => (
                       <option key={t} value={t}>{formatTime12h(t)}</option>
@@ -122,7 +122,7 @@ export default function AvailabilityForm({
       </div>
 
       {/* Footer / Save */}
-      <div className="px-6 py-4 border-t border-[var(--cal-border)] flex items-center justify-between bg-[var(--cal-bg-subtle)] rounded-b-lg">
+      <div className="px-4 sm:px-6 py-4 border-t border-[var(--cal-border)] flex flex-col sm:flex-row items-center justify-between gap-3 bg-[var(--cal-bg-subtle)] rounded-b-lg">
         <p className="text-sm text-gray-500">
           {enabledCount} {enabledCount === 1 ? 'day' : 'days'} active
         </p>

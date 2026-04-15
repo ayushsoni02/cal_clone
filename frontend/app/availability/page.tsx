@@ -108,7 +108,7 @@ export default function AvailabilityPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Availability</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-[var(--cal-text)]">Availability</h1>
           <p className="text-gray-500 mt-1 text-sm">Set your weekly availability schedule.</p>
         </div>
       </div>

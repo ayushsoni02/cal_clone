@@ -64,14 +64,14 @@ export default function DashboardPage() {
   return (
     <div>
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-[var(--cal-text)]">Event Types</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-[var(--cal-text)]">Event Types</h1>
           <p className="text-[var(--cal-text-muted)] mt-1 text-sm">Create and manage event types for people to book.</p>
         </div>
         <Link
           href="/event-types/new"
-          className="inline-flex items-center gap-2 h-10 px-4 bg-[var(--cal-brand)] text-[var(--cal-brand-text)] text-sm font-medium rounded-md hover:bg-gray-800 transition-colors"
+          className="inline-flex items-center justify-center gap-2 h-10 px-4 bg-[var(--cal-brand)] text-[var(--cal-brand-text)] text-sm font-medium rounded-md hover:bg-gray-800 transition-colors w-full sm:w-auto"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
