@@ -28,3 +28,5 @@ export const rescheduleBooking = (id: number, data: { startTime: string }) => ap
 // Public
 export const getPublicEventType = (username: string, slug: string) =>
   api.get(`/public/${username}/${slug}`);
+export const getPublicUser = (username: string) =>
+  api.get(`/public/${username}`);

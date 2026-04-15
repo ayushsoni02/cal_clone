@@ -6,7 +6,7 @@ import eventTypesRouter from './routes/eventTypes';
 import availabilityRouter from './routes/availability';
 import bookingsRouter from './routes/bookings';
 import { errorHandler } from './middleware/errorHandler';
-import { getPublicEventType } from './controllers/eventTypes.controller';
+import { getPublicEventType, getPublicUser } from './controllers/eventTypes.controller';
 
 dotenv.config();
 
@@ -21,6 +21,7 @@ app.use(express.json());
 app.use('/api/event-types', eventTypesRouter);
 app.use('/api/availability', availabilityRouter);
 app.use('/api/bookings', bookingsRouter);
+app.get('/api/public/:username', getPublicUser);
 app.get('/api/public/:username/:slug', getPublicEventType);
 
 // Health check

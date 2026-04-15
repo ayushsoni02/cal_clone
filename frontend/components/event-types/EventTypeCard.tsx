@@ -39,6 +39,16 @@ export default function EventTypeCard({ eventType: et, copiedSlug, onCopyLink, o
 
           {/* Desktop actions — hover reveal */}
           <div className="hidden sm:flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+            <Link
+              href={`/admin/${et.slug}`}
+              target="_blank"
+              className="p-2 text-gray-400 hover:text-[var(--cal-brand)] hover:bg-gray-100 rounded-md transition-colors"
+              title="View public page"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+              </svg>
+            </Link>
             <button
               onClick={() => onCopyLink(et.slug)}
               className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
@@ -76,7 +86,17 @@ export default function EventTypeCard({ eventType: et, copiedSlug, onCopyLink, o
         </div>
 
         {/* Mobile actions — always visible row */}
-        <div className="flex sm:hidden items-center gap-2 mt-3 pt-3 border-t border-gray-100">
+        <div className="flex sm:hidden items-center gap-2 mt-3 pt-3 border-t border-gray-100 flex-wrap">
+          <Link
+            href={`/admin/${et.slug}`}
+            target="_blank"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[var(--cal-text-muted)] bg-gray-50 hover:bg-gray-100 rounded-md transition-colors"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+            </svg>
+            View
+          </Link>
           <button
             onClick={() => onCopyLink(et.slug)}
             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[var(--cal-text-muted)] bg-gray-50 hover:bg-gray-100 rounded-md transition-colors"

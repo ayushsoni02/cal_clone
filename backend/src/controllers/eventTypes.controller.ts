@@ -163,3 +163,38 @@ export const deleteEventType = async (req: Request<{ id: string }>, res: Respons
     res.status(500).json({ error: 'Failed to delete event type' });
   }
 };
+
+// GET /api/public/:username — List all public event types for a user
+export const getPublicUser = async (req: Request<{ username: string }>, res: Response) => {
+  try {
+    const { username } = req.params;
+
+    const user = await prisma.user.findUnique({
+      where: { username },
+      select: {
+        id: true,
+        username: true,
+        name: true,
+        eventTypes: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            duration: true,
+            slug: true,
+          },
+          orderBy: { createdAt: 'desc' },
+        },
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error('Error fetching public user:', error);
+    res.status(500).json({ error: 'Failed to fetch public user' });
+  }
+};
