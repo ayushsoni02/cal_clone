@@ -11,6 +11,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [copiedSlug, setCopiedSlug] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const fetchEventTypes = useCallback(async () => {
     try {
@@ -64,33 +65,49 @@ export default function DashboardPage() {
   return (
     <div>
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-[var(--cal-text)]">Event Types</h1>
           <p className="text-[var(--cal-text-muted)] mt-1 text-sm">Create and manage event types for people to book.</p>
         </div>
-        <Link
-          href="/event-types/new"
-          className="inline-flex items-center justify-center gap-2 h-10 px-4 bg-[var(--cal-brand)] text-[var(--cal-brand-text)] text-sm font-medium rounded-md hover:bg-gray-800 transition-colors w-full sm:w-auto"
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-          </svg>
-          New event type
-        </Link>
+        <div className="flex flex-col sm:flex-row w-full md:w-auto gap-3">
+          <div className="relative w-full sm:w-64">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="block w-full h-10 pl-10 pr-3 text-[14px] bg-[var(--cal-bg-subtle)] border border-[var(--cal-border)] rounded-md outline-none focus:border-gray-500 text-[var(--cal-text)] transition-colors placeholder:text-gray-500"
+            />
+          </div>
+          <Link
+            href="/event-types/new"
+            className="flex-shrink-0 inline-flex items-center justify-center gap-2 h-10 px-4 bg-[var(--cal-brand)] text-[var(--cal-brand-text)] text-sm font-medium rounded-md hover:opacity-90 transition-opacity w-full sm:w-auto"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            New event type
+          </Link>
+        </div>
       </div>
 
       {/* Event Type List */}
       {eventTypes.length === 0 ? (
-        <div className="text-center py-16 bg-[var(--cal-bg)] rounded-lg border border-[var(--cal-border)]">
-          <svg className="mx-auto h-12 w-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+        <div className="text-center py-16 bg-[var(--cal-bg)] rounded-xl border border-[var(--cal-border)]">
+          <svg className="mx-auto h-12 w-12 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
           </svg>
-          <h3 className="mt-3 text-sm font-semibold text-gray-900">No event types</h3>
-          <p className="mt-1 text-sm text-gray-500">Get started by creating your first event type.</p>
+          <h3 className="mt-4 text-sm font-semibold text-[var(--cal-text)]">No event types</h3>
+          <p className="mt-1 text-sm text-[var(--cal-text-muted)]">Get started by creating your first event type.</p>
           <Link
             href="/event-types/new"
-            className="inline-flex items-center gap-2 mt-4 h-10 px-4 bg-[var(--cal-brand)] text-[var(--cal-brand-text)] text-sm font-medium rounded-md hover:bg-gray-800 transition-colors"
+            className="inline-flex items-center gap-2 mt-5 h-10 px-4 bg-[var(--cal-brand)] text-[var(--cal-brand-text)] text-sm font-medium rounded-md hover:opacity-90 transition-opacity"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -99,16 +116,23 @@ export default function DashboardPage() {
           </Link>
         </div>
       ) : (
-        <div className="bg-[var(--cal-bg)] rounded-lg border border-[var(--cal-border)] divide-y divide-[var(--cal-border)] overflow-hidden shadow-sm">
-          {eventTypes.map((et) => (
-            <EventTypeCard
-              key={et.id}
-              eventType={et}
-              copiedSlug={copiedSlug}
-              onCopyLink={handleCopyLink}
-              onDelete={setDeleteId}
-            />
+        <div className="bg-[var(--cal-bg)] rounded-xl border border-[var(--cal-border)] divide-y divide-[var(--cal-border)] overflow-hidden shadow-sm">
+          {eventTypes
+            .filter((et) => et.title.toLowerCase().includes(searchQuery.toLowerCase()))
+            .map((et) => (
+              <EventTypeCard
+                key={et.id}
+                eventType={et}
+                copiedSlug={copiedSlug}
+                onCopyLink={handleCopyLink}
+                onDelete={setDeleteId}
+              />
           ))}
+          {eventTypes.filter((et) => et.title.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-sm text-[var(--cal-text-muted)]">No event types found matching "{searchQuery}"</p>
+            </div>
+          )}
         </div>
       )}
 

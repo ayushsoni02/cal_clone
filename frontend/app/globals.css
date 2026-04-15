@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
-/* ===== Cal.com Design System ===== */
+/* ===== Cal.com Design System (Dark Theme) ===== */
 :root {
-  --cal-bg: #ffffff;
-  --cal-bg-subtle: #f8f9fa;
-  --cal-border: #e5e7eb;
-  --cal-text: #111827;
-  --cal-text-muted: #6b7280;
-  --cal-brand: #000000;
-  --cal-brand-text: #ffffff;
-  --cal-success: #059669;
+  --cal-bg: #000000;
+  --cal-bg-subtle: #0a0a0a;
+  --cal-border: #262626;
+  --cal-text: #ededed;
+  --cal-text-muted: #a3a3a3;
+  --cal-brand: #ffffff;
+  --cal-brand-text: #000000;
+  --cal-success: #10b981;
 
   --background: var(--cal-bg);
   --foreground: var(--cal-text);
@@ -20,6 +20,21 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
+
+  /* Overriding Tailwind base colors for seamless dark mode */
+  --color-white: #111111;
+  --color-black: #ffffff;
+  --color-gray-50: #0a0a0a;
+  --color-gray-100: #1a1a1a;
+  --color-gray-200: #262626;
+  --color-gray-300: #333333;
+  --color-gray-400: #525252;
+  --color-gray-500: #a3a3a3;
+  --color-gray-600: #d4d4d4;
+  --color-gray-700: #e5e5e5;
+  --color-gray-800: #f5f5f5;
+  --color-gray-900: #fafafa;
+  --color-gray-950: #ffffff;
 
   /* Custom animations */
   --animate-fade-in: fade-in 0.3s ease-out;
@@ -135,12 +150,12 @@ select:focus {
 }
 
 .react-calendar__navigation button:hover {
-  background: #f3f4f6 !important;
+  background: #262626 !important;
 }
 
 .react-calendar__navigation button:disabled {
   background: transparent !important;
-  color: #d1d5db !important;
+  color: #525252 !important;
 }
 
 .react-calendar__month-view__weekdays {
@@ -163,7 +178,7 @@ select:focus {
 }
 
 .react-calendar__tile:hover {
-  background: #f3f4f6 !important;
+  background: #262626 !important;
   border-radius: 8px !important;
 }
 
@@ -187,7 +202,7 @@ select:focus {
 }
 
 .react-calendar__tile--now:hover {
-  background: #f3f4f6 !important;
+  background: #262626 !important;
 }
 
 .react-calendar__tile--active,
@@ -199,13 +214,13 @@ select:focus {
 }
 
 .react-calendar__tile:disabled {
-  color: #d1d5db !important;
+  color: #525252 !important;
   background: transparent !important;
   cursor: not-allowed !important;
 }
 
 .react-calendar__month-view__days__day--neighboringMonth {
-  color: #d1d5db !important;
+  color: #525252 !important;
 }
 
 /* ===== Scrollbar Styling ===== */
@@ -218,10 +233,10 @@ select:focus {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d1d5db;
+  background: #525252;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
+  background: #737373;
 }

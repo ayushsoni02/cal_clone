@@ -51,11 +51,11 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="px-5 py-4 border-b border-[var(--cal-border)]">
         <Link href="/dashboard" className="flex items-center gap-2.5 group" onClick={() => setMobileOpen(false)}>
-          <div className="w-8 h-8 rounded-lg bg-[var(--cal-brand)] flex items-center justify-center transition-transform group-hover:scale-105">
+          {/* <div className="w-8 h-8 rounded-lg bg-[var(--cal-brand)] text-[var(--cal-brand-text)] flex items-center justify-center transition-transform group-hover:scale-105">
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
-              <path d="M7 12.5L10.5 16L17 9" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M7 12.5L10.5 16L17 9" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-          </div>
+          </div> */}
           <span className="font-bold text-[18px] tracking-tight text-[var(--cal-text)]">Cal.com</span>
         </Link>
       </div>
