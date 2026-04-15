@@ -3,16 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import EventTypeForm from '@/components/EventTypeForm';
+import EventTypeForm from '@/components/event-types/EventTypeForm';
 import { api } from '@/lib/api';
-
-interface EventType {
-  id: number;
-  title: string;
-  description: string | null;
-  duration: number;
-  slug: string;
-}
+import { EventType } from '@/types';
 
 export default function EditEventTypePage() {
   const params = useParams();

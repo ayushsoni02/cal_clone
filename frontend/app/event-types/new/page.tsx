@@ -1,4 +1,4 @@
-import EventTypeForm from '@/components/EventTypeForm';
+import EventTypeForm from '@/components/event-types/EventTypeForm';
 import Link from 'next/link';
 
 export default function NewEventTypePage() {

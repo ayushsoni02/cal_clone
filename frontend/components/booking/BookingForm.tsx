@@ -4,23 +4,12 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
 import { createBooking } from '@/lib/api';
+import { EventTypePublic, Slot } from '@/types';
 
 interface BookingFormProps {
-  eventType: {
-    id: number;
-    title: string;
-    duration: number;
-    slug: string;
-    user: {
-      username: string;
-      name: string;
-    };
-  };
+  eventType: EventTypePublic;
   selectedDate: Date;
-  selectedSlot: {
-    time: string;
-    datetime: string;
-  };
+  selectedSlot: Slot;
   onBack: () => void;
 }
 

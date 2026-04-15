@@ -2,43 +2,19 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
-import { format, parseISO } from 'date-fns';
+import { format } from 'date-fns';
 import { api } from '@/lib/api';
-import BookingForm from './BookingForm';
-
-interface EventTypeInfo {
-  id: number;
-  title: string;
-  description: string | null;
-  duration: number;
-  slug: string;
-  user: {
-    id: number;
-    username: string;
-    name: string;
-  };
-}
-
-interface Slot {
-  time: string;
-  datetime: string;
-}
-
-interface AvailabilityDay {
-  dayOfWeek: number;
-  startTime: string;
-  endTime: string;
-  timezone: string;
-}
+import { EventTypePublic, AvailabilityDay, Slot } from '@/types';
+import CalendarPicker from '@/components/booking/CalendarPicker';
+import TimeSlotList from '@/components/booking/TimeSlotList';
+import BookingForm from '@/components/booking/BookingForm';
 
 export default function PublicBookingPage() {
   const params = useParams();
   const username = params.username as string;
   const slug = params.slug as string;
 
-  const [eventType, setEventType] = useState<EventTypeInfo | null>(null);
+  const [eventType, setEventType] = useState<EventTypePublic | null>(null);
   const [availability, setAvailability] = useState<AvailabilityDay[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [slots, setSlots] = useState<Slot[]>([]);
@@ -83,23 +59,12 @@ export default function PublicBookingPage() {
     }
   }, [eventType]);
 
-  const handleDateChange = (value: any) => {
-    const date = value as Date;
+  const handleDateChange = (date: Date) => {
     setSelectedDate(date);
     fetchSlots(date);
   };
 
-  // Which day-of-week numbers are available
   const availableDays = new Set(availability.map(a => a.dayOfWeek));
-
-  // Disable dates: past dates + days not in availability
-  const tileDisabled = ({ date, view }: { date: Date; view: string }) => {
-    if (view !== 'month') return false;
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    if (date < today) return true;
-    return !availableDays.has(date.getDay());
-  };
 
   if (loading) {
     return (
@@ -192,15 +157,10 @@ export default function PublicBookingPage() {
           {/* Middle Panel — Calendar */}
           <div className="flex-1 p-6">
             <h2 className="text-sm font-semibold text-gray-900 mb-4">Select a date</h2>
-            <Calendar
-              onChange={handleDateChange}
-              value={selectedDate}
-              tileDisabled={tileDisabled}
-              minDate={new Date()}
-              locale="en-US"
-              next2Label={null}
-              prev2Label={null}
-              minDetail="month"
+            <CalendarPicker
+              selectedDate={selectedDate}
+              availableDays={availableDays}
+              onDateChange={handleDateChange}
             />
           </div>
 
@@ -208,7 +168,6 @@ export default function PublicBookingPage() {
           {selectedDate && (
             <div className="w-full md:w-72 p-6 flex-shrink-0 overflow-y-auto max-h-[500px]">
               {selectedSlot ? (
-                /* Booking Form */
                 <BookingForm
                   eventType={eventType}
                   selectedDate={selectedDate}
@@ -216,42 +175,12 @@ export default function PublicBookingPage() {
                   onBack={() => setSelectedSlot(null)}
                 />
               ) : (
-                /* Time Slots */
-                <>
-                  <h2 className="text-sm font-semibold text-gray-900 mb-1">
-                    {format(selectedDate, 'EEEE, MMMM d')}
-                  </h2>
-                  <p className="text-xs text-gray-500 mb-4">
-                    {slots.length} {slots.length === 1 ? 'slot' : 'slots'} available
-                  </p>
-
-                  {slotsLoading ? (
-                    <div className="space-y-2">
-                      {[1, 2, 3, 4, 5].map(i => (
-                        <div key={i} className="h-10 bg-gray-100 rounded-lg animate-pulse" />
-                      ))}
-                    </div>
-                  ) : slots.length === 0 ? (
-                    <div className="text-center py-8">
-                      <svg className="mx-auto h-10 w-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <p className="mt-2 text-sm text-gray-500">No available slots</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2">
-                      {slots.map((slot) => (
-                        <button
-                          key={slot.time}
-                          onClick={() => setSelectedSlot(slot)}
-                          className="w-full px-4 py-2.5 text-sm font-medium border border-gray-200 rounded-lg hover:border-gray-900 hover:bg-gray-900 hover:text-white transition-all duration-150 text-gray-900"
-                        >
-                          {slot.time}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </>
+                <TimeSlotList
+                  slots={slots}
+                  loading={slotsLoading}
+                  dateLabel={format(selectedDate, 'EEEE, MMMM d')}
+                  onSelectSlot={setSelectedSlot}
+                />
               )}
             </div>
           )}

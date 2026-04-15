@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createEventType, updateEventType } from '@/lib/api';
+import { slugify } from '@/lib/utils';
 
 interface EventTypeFormProps {
   mode: 'create' | 'edit';
@@ -23,16 +24,6 @@ const DURATION_OPTIONS = [
   { value: 90, label: '90 minutes' },
   { value: 120, label: '120 minutes' },
 ];
-
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/[\s]+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
-}
 
 export default function EventTypeForm({ mode, initialData }: EventTypeFormProps) {
   const router = useRouter();
