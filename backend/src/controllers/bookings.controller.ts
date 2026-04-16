@@ -197,7 +197,7 @@ export const createBooking = async (req: Request, res: Response) => {
     });
 
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-    
+
     sendEmail(
       bookerEmail,
       `Booking Confirmed: ${booking.eventType.title}`,
@@ -275,7 +275,7 @@ export const rescheduleBooking = async (req: Request<{ id: string }>, res: Respo
     if (!booking) {
       return res.status(404).json({ error: 'Booking not found' });
     }
-    
+
     if (booking.status === 'cancelled') {
       return res.status(400).json({ error: 'Cannot reschedule a cancelled booking' });
     }
