@@ -18,7 +18,7 @@ export const sendEmail = async (to: string, subject: string, html: string) => {
 
   try {
     await transporter.sendMail({
-      from: process.env.EMAIL_FROM || '"Cal.com Clone" <noreply@cal.com>',
+      from: `"${process.env.EMAIL_FROM || 'Cal.com Clone'}" <${process.env.SMTP_USER}>`,
       to,
       subject,
       html,

@@ -196,10 +196,12 @@ export const createBooking = async (req: Request, res: Response) => {
       });
     });
 
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+    
     sendEmail(
       bookerEmail,
       `Booking Confirmed: ${booking.eventType.title}`,
-      `Your booking for <b>${booking.eventType.title}</b> is confirmed for ${bookingStart.toLocaleString()}.<br><br>Cancel here: http://localhost:3000/bookings`
+      `Your booking for <b>${booking.eventType.title}</b> is confirmed for ${bookingStart.toLocaleString()}.<br><br>Cancel here: ${frontendUrl}/bookings`
     );
 
     res.status(201).json(booking);
