@@ -29,6 +29,28 @@ The project is structured as a monorepo consisting of a decoupled frontend and b
 * **Email Notifications:** Automatic HTML-templated emails dispatched on booking confirmations, cancellations, and reschedules.
 * **Premium Dark Theme:** A fully integrated, CSS-variable-based dark UI natively mimicking modern SaaS aesthetics.
 
+## Screenshots & Features Showcase
+
+### 1. Public Booking Page
+*A sleek, shareable landing page automatically aggregating all active event types for a host.*
+![Public Booking Page](assets/public_page.png)
+
+### 2. Event Types Dashboard
+*Manage all your meeting templates, durations, and URLs from a centralized dashboard table featuring dynamic search.*
+![Event Types Dashboard](assets/event_types.png)
+
+### 3. Slot Selection & Booking Flow
+*Dynamic, conflict-free time slots are generated based on the host's actual availability and buffer times.*
+![Booking Flow](assets/booking_flow.png)
+
+### 4. Bookings Management
+*Track your upcoming, past, and cancelled meetings with full manual cancellation limits.*
+![Bookings List](assets/bookings_list.png)
+
+### 5. Advanced Availability Settings
+*Set custom weekly bounding hours or completely override specific dates where you are out-of-office.*
+![Availability Settings](assets/availability.png)
+
 ## Assumptions Made
 
 Due to the scoped nature of this task, the following assumptions were made regarding the system's edge cases:
